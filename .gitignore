@@ -14,3 +14,6 @@ lib/__init__.py
 test/**
 rt-sandbox/**
 .rt-deps/**
+
+django_ldap_auth_backend.egg-info/**
+
