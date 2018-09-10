@@ -4,9 +4,8 @@ from __future__ import unicode_literals
 from json import loads as json_loads
 
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.generic.base import View
-
 from django.shortcuts import render
 
 from ldapauthbackend.operations import fetch_nonexist_candidate_members
@@ -14,7 +13,7 @@ from ldapauthbackend.operations import import_candidate_member
 
 
 def index(request):  # pylint: disable=unused-argument
-	return HttpResponse("Hello, world. You're at index of %r." % (__name__, ))
+	return render(request, "ldapauthbackend/index.html")
 
 
 class AccessCheckMixin(UserPassesTestMixin):

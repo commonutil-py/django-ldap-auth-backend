@@ -1,0 +1,10 @@
+{
+	"app_path": "ldapauthbackend/",
+	"static_namespace": "ldapauthbackend/ui/",
+	"pull_from": [
+		{
+			"name": "ui",
+			"template_name": "ldapauthbackend/index.html"
+		}
+	]
+}
