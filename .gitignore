@@ -15,5 +15,6 @@ test/**
 rt-sandbox/**
 .rt-deps/**
 
+dist/**
 django_ldap_auth_backend.egg-info/**
 
