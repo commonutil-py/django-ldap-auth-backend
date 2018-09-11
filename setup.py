@@ -13,7 +13,7 @@ setup(
 		],
 		install_requires=[
 				"python-ldap ~= 3.1.0",
-				"django-angular-host-page-template-backend ~= 0.0.2",
+				"django-angular-host-page-template-backend ~= 0.1.0",
 		])
 
 # vim: ts=4 sw=4 ai nowrap
