@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from json import loads as json_loads
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import JsonResponse
 from django.views.generic.base import View
@@ -12,6 +13,7 @@ from ldapauthbackend.operations import fetch_nonexist_candidate_members
 from ldapauthbackend.operations import import_candidate_member
 
 
+@staff_member_required
 def index(request):  # pylint: disable=unused-argument
 	return render(request, "ldapauthbackend/index.html")
 
