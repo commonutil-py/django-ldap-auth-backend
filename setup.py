@@ -11,6 +11,7 @@ setup(
 				"ldapauthbackend",
 				"ldapauthbackend.migrations",
 		],
+		include_package_data=True,
 		install_requires=[
 				"python-ldap ~= 3.1.0",
 				"django-angular-host-page-template-backend ~= 0.1.0",
