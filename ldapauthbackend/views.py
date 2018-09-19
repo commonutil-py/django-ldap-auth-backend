@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from json import loads as json_loads
 
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import JsonResponse
 from django.views.generic.base import View
@@ -11,6 +12,7 @@ from django.shortcuts import render
 
 from ldapauthbackend.operations import fetch_nonexist_candidate_members
 from ldapauthbackend.operations import import_candidate_member
+from ldapauthbackend.operations import sync_user_ldap_profile
 
 
 @staff_member_required
@@ -50,5 +52,21 @@ class ImportMember(AccessCheckMixin, View):
 		u = import_candidate_member(username, memberdn, request.user)
 		result = {
 				"username": u.username,
+		}
+		return JsonResponse(result)
+
+
+class SyncProfile(AccessCheckMixin, View):
+	permission_required = ('auth.add_user', )
+
+	def post(self, request, *args, **kwds):  # pylint: disable=unused-argument
+		cmap = json_loads(request.body)
+		username = cmap["username"]
+		u = get_user_model().objects.get(username=username)
+		u = sync_user_ldap_profile(u)
+		result = {
+				"username": u.username,
+				"account_uid": u.ldapuserprofile.account_uid,
+				"account_name": u.ldapuserprofile.account_name,
 		}
 		return JsonResponse(result)
