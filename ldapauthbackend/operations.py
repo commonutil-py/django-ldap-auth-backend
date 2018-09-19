@@ -45,7 +45,18 @@ def import_candidate_member(user_name, user_dn, assoc_staff_user):
 		raise ValueError("duplicated user: %r (given user-name=%r)" % (u, user_name))
 	except ObjectDoesNotExist:
 		pass
+	conn = Connection.build_via_configuration()
+	profile = conn.fetch_user_profile(user_dn)
 	u = get_user_model().objects.create_user(user_name)
-	ldap_profile = LDAPUserProfile(user=u, dn=user_dn, import_staff=assoc_staff_user)
+	ldap_profile = LDAPUserProfile(user=u, dn=user_dn, account_uid=profile.account_uid, account_name=profile.account_name, import_staff=assoc_staff_user)
 	ldap_profile.save()
 	return u
+
+
+def sync_user_ldap_profile(user):
+	conn = Connection.build_via_configuration()
+	profile = conn.fetch_user_profile(user.ldapuserprofile.dn)
+	user.ldapuserprofile.account_uid = profile.account_uid
+	user.ldapuserprofile.account_name = profile.account_name
+	user.save()
+	return user
