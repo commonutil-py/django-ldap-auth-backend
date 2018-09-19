@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from collections import namedtuple
 from string import ascii_letters
 from string import digits as ascii_digits
 from json import load as json_load
@@ -57,6 +58,8 @@ def get_module():
 
 
 USERNAME_ACCEPT_CHAR = ascii_letters + ascii_digits + "_-."
+
+UserProfile = namedtuple("UserProfile", ("dn", "user_id", "user_name"))
 
 
 def sanitize_username(n):
@@ -143,6 +146,17 @@ class Connection(object):
 				if not l:
 					continue
 				result.update(l)
+		return result
+
+	def fetch_user_profile(self, user_dn):
+		result = None
+		r = self.search(user_dn, ldap.SCOPE_BASE, attrlist=('uid', 'uidNumber'))
+		for dn, entry in r:
+			user_name = entry['uid'][0]
+			user_id = int(entry['uidNumber'][0])
+			result = UserProfile(dn, user_id, user_name)
+		if not result:
+			raise KeyError("User DN not found: %r" % (user_dn, ))
 		return result
 
 
