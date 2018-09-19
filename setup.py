@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
 		name="django-ldap-auth-backend",
-		version="0.1.2",  # REV-CONSTANT:rev 5d022db7d38f580a850cd995e26a6c2f
+		version="0.1.3",  # REV-CONSTANT:rev 5d022db7d38f580a850cd995e26a6c2f
 		description="LDAP authentication backend for Django",
 		packages=[
 				"ldapauthbackend",
