@@ -59,7 +59,7 @@ def get_module():
 
 USERNAME_ACCEPT_CHAR = ascii_letters + ascii_digits + "_-."
 
-UserProfile = namedtuple("UserProfile", ("dn", "user_id", "user_name"))
+UserProfile = namedtuple("UserProfile", ("dn", "account_uid", "account_name"))
 
 
 def sanitize_username(n):
