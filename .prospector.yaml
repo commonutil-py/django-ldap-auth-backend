@@ -1,0 +1,22 @@
+autodetect: false
+# uses:
+#   - django
+
+ignore-paths:
+  - ldapauthbackend/migrations
+  - dist
+  - docs
+  - build-tool
+  - rootfs
+  - etc
+
+pylint:
+  disable:
+    - keyword-arg-before-vararg
+    - too-many-arguments
+  options:
+    indent-string: "\t"
+
+pep8:
+  disable:
+    - E131
