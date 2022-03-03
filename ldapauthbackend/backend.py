@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from collections import namedtuple
 from string import ascii_letters
@@ -19,9 +18,9 @@ _mod = None
 _cfg = None
 
 
-class LDAPAuthBackendConfig(object):
+class LDAPAuthBackendConfig:
 	def __init__(self, urls, account_base_dn, candidate_group_dn, *args, **kwds):
-		super(LDAPAuthBackendConfig, self).__init__(*args, **kwds)
+		super().__init__(*args, **kwds)
 		self.urls = urls
 		self.account_base_dn = account_base_dn
 		self.candidate_group_dn = candidate_group_dn
@@ -29,7 +28,7 @@ class LDAPAuthBackendConfig(object):
 	@classmethod
 	def load_configuration(cls):
 		cfg_path = getattr(django_settings, "LDAP_AUTH_CONFIG_FILE")
-		with open(cfg_path, "r") as fp:
+		with open(cfg_path, "r", encoding='utf-8') as fp:
 			cmap = json_load(fp)
 		urls = tuple(cmap["urls"])
 		account_base_dn = tuple(cmap["account_base_dn"])
@@ -68,19 +67,19 @@ def sanitize_username(n):
 
 class ConnectError(Exception):
 	def __init__(self, urls, *args, **kwds):
-		super(ConnectError, self).__init__(*args, **kwds)
+		super().__init__(*args, **kwds)
 		self.urls = urls
 
 	def __repr__(self):
-		return "ConnectError(%r)" % (self.urls, )
+		return f"ConnectError({self.urls!r})"
 
 
 _EMPTY_ITERABLE = ()
 
 
-class Connection(object):
+class Connection:
 	def __init__(self, cfg, *args, **kwds):
-		super(Connection, self).__init__(*args, **kwds)
+		super().__init__(*args, **kwds)
 		self.urls = cfg.urls
 		self.account_base_dn = cfg.account_base_dn
 		self.candidate_group_dn = cfg.candidate_group_dn
@@ -98,9 +97,9 @@ class Connection(object):
 		m_ldap = get_module()
 		for u in self.urls:
 			self._link = None
-			l = m_ldap.initialize(u, bytes_mode=False)
-			self._link = l
-			yield l
+			lnk = m_ldap.initialize(u, bytes_mode=False)
+			self._link = lnk
+			yield lnk
 
 	def _invoke(self, n, *args, **kwds):
 		for lnk in self._get_link():
@@ -142,10 +141,10 @@ class Connection(object):
 		for base_dn in self.candidate_group_dn:
 			r = self.search(base_dn, ldap.SCOPE_SUBTREE, '(objectClass=posixGroup)', ('memberUid', ))
 			for _dn, entry in r:
-				l = entry.get('memberUid', None)
-				if not l:
+				vl = entry.get('memberUid', None)
+				if not vl:
 					continue
-				result.update(l)
+				result.update(vl)
 		return result
 
 	def fetch_user_profile(self, user_dn):
@@ -156,14 +155,14 @@ class Connection(object):
 			user_id = int(entry['uidNumber'][0])
 			result = UserProfile(dn, user_id, user_name)
 		if not result:
-			raise KeyError("User DN not found: %r" % (user_dn, ))
+			raise KeyError(f"User DN not found: {user_dn!r}")
 		return result
 
 
 UserModel = get_user_model()
 
 
-class LDAPAuthBackend(object):
+class LDAPAuthBackend:
 	def _can_authenticate(self, u):
 		is_active = getattr(u, 'is_active', True)
 		return is_active

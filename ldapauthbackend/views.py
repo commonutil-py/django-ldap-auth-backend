@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from json import loads as json_loads
 
@@ -16,7 +15,7 @@ from ldapauthbackend.operations import sync_user_ldap_profile
 
 
 @staff_member_required
-def index(request):  # pylint: disable=unused-argument
+def index(request):
 	return render(request, "ldapauthbackend/index.html")
 
 

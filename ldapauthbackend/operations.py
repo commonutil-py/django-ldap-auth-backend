@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
@@ -42,7 +41,7 @@ def import_candidate_member(user_name, user_dn, assoc_staff_user):
 	user_name = sanitize_username(user_name)
 	try:
 		u = get_user_model().objects.get(username=user_name)
-		raise ValueError("duplicated user: %r (given user-name=%r)" % (u, user_name))
+		raise ValueError(f"duplicated user: {u!r} (given user-name={user_name!r})")
 	except ObjectDoesNotExist:
 		pass
 	conn = Connection.build_via_configuration()
