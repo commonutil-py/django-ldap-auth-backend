@@ -13,8 +13,17 @@ setup(
 		],
 		include_package_data=True,
 		install_requires=[
-				"python-ldap ~= 3.1.0",
+				"python-ldap ~= 3.4.0",
 				"django-angular-host-page-template-backend ~= 0.1.0",
-		])
+		],
+		classifiers=[
+				'Development Status :: 5 - Production/Stable',
+				'Intended Audience :: Developers',
+				'License :: OSI Approved :: MIT License',
+				'Programming Language :: Python :: 3.7',
+				'Framework :: Django :: 1.11',
+		],
+		license='MIT License',
+)
 
 # vim: ts=4 sw=4 ai nowrap
