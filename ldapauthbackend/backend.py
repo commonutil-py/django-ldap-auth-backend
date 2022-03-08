@@ -97,7 +97,7 @@ class Connection:
 		m_ldap = get_module()
 		for u in self.urls:
 			self._link = None
-			lnk = m_ldap.initialize(u, bytes_mode=False)
+			lnk = m_ldap.initialize(u)
 			self._link = lnk
 			yield lnk
 
@@ -144,14 +144,14 @@ class Connection:
 				vl = entry.get('memberUid', None)
 				if not vl:
 					continue
-				result.update(vl)
+				result.update(filter(None, map(lambda x: str(x, encoding='utf-8', errors='ignore'), vl)))
 		return result
 
 	def fetch_user_profile(self, user_dn):
 		result = None
 		r = self.search(user_dn, ldap.SCOPE_BASE, attrlist=('uid', 'uidNumber'))
 		for dn, entry in r:
-			user_name = entry['uid'][0]
+			user_name = str(entry['uid'][0], encoding='utf-8', errors='ignore')
 			user_id = int(entry['uidNumber'][0])
 			result = UserProfile(dn, user_id, user_name)
 		if not result:
