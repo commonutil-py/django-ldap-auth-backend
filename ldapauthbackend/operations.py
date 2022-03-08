@@ -26,7 +26,7 @@ def fetch_nonexist_candidate_members():
 	conn = Connection.build_via_configuration()
 	candidate_uids = conn.fetch_candidate_member_uids()
 	existed_user, existed_dn = fetch_existed_user_dn()
-	for n in existed_user.iterkeys():
+	for n in existed_user:
 		candidate_uids.discard(n)
 	result = {}
 	for u in candidate_uids:

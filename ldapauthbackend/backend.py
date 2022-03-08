@@ -50,7 +50,7 @@ def get_module():
 	if _mod is None:
 		mod_opt = getattr(django_settings, "LDAP_AUTH_MODULE_OPTIONS", None)
 		if mod_opt:
-			for opt_k, opt_v in mod_opt.iteritems():
+			for opt_k, opt_v in mod_opt.items():
 				ldap.set_option(opt_k, opt_v)
 		_mod = ldap
 	return _mod

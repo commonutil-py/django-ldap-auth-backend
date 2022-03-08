@@ -35,7 +35,7 @@ class AccessCheckMixin(UserPassesTestMixin):
 class CandidateMembers(AccessCheckMixin, View):
 	def get(self, request, *args, **kwds):  # pylint: disable=unused-argument
 		candidate_member_dn = fetch_nonexist_candidate_members()
-		d = [{"username": u, "dn": d} for u, d in candidate_member_dn.iteritems()]
+		d = [{"username": u, "dn": d} for u, d in candidate_member_dn.items()]
 		d.sort(key=lambda x: x.get("username", None))
 		result = {"candidates": d, "access_via": request.user.username}
 		return JsonResponse(result)
